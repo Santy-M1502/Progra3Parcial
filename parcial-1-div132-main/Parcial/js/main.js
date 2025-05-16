@@ -102,27 +102,29 @@ escribirNombre(user)
 // Ejercicio 2 y 3
 const escribirProductos = (filtro = "")=>{
     fetch('db.json')
-    .then(res => res.json())
+    .then(res => {
+        console.log(res); // Aquí puedes ver si devuelve HTML
+        return res.json();
+    })
     .then(productos => {
     const product_grid = document.querySelector(".product-grid")
     product_grid.innerHTML = ""
     productos.forEach(producto => {
-        const name = producto.title
+        const name = producto.nombre
         if (name.toLowerCase().includes(filtro.toLowerCase())) {
         const div = document.createElement("div")
         div.classList.add("product-card")
         div.innerHTML = `
-            <img src="${producto.image}" alt="nombre">
-            <h3>${producto.title}</h3>
-            <p>$${producto.price}</p>
+            <img src="${producto.img}" alt="nombre">
+            <h3>${producto.nombre}</h3>
+            <p>$${producto.precio}</p>
         `
         const boton = document.createElement('button');
                     boton.textContent = 'Agregar a carrito';
                     boton.classList.add('add-to-cart');
                     boton.addEventListener('click', () => {
                         carrito.push(producto);
-                        localStorage.setItem("carrito", JSON.stringify(carrito))
-                        console.log("Producto agregado:", producto.title)
+                        console.log("Producto agregado:", producto.nombre)
                         cargarCarrito()
                     });
 
@@ -131,6 +133,7 @@ const escribirProductos = (filtro = "")=>{
         }
 
     })
+    
 })
 }
 // Ejercicio 2 y 3
@@ -149,11 +152,11 @@ const cargarCarrito = () => {
         const product_cart = document.getElementById("cart-items")
         product_cart.innerHTML = ""
         carrito.forEach((element, index) => {
-        const name = element.title
+        const name = element.nombre
         const li = document.createElement("li")
         li.classList.add("item-block")
         li.innerHTML = `
-            <p class="item-name">${element.title} - $${element.price}</p>
+            <p class="item-name">${element.nombre} - $${element.precio}</p>
         `
 
         const boton = document.createElement('button');
@@ -166,7 +169,8 @@ const cargarCarrito = () => {
         li.appendChild(boton)
 
         product_cart.appendChild(li)
-    })}
+    })
+    localStorage.setItem("carrito", JSON.stringify(carrito))}
 
 
 // Ejercicio 5
