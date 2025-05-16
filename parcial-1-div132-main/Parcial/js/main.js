@@ -81,10 +81,109 @@
     - Asegúrate de que al recargar la página el carrito se recupere automáticamente desde `localStorage`.
 */
 
+var carrito = []
+// Ejercicio 1
+const escribirNombre = (user) =>{
+    var nombre = document.querySelector(".nombreAlumno")
+    nombre.innerHTML = `
+        <h3>${user.nombre}-${user.apellido}</h3>
+        `
+    console.log(user.nombre, user.apellido)
+  }
+const user = {
+    "nombre" : "santiago",
+    "apellido" : "martinez"
+  }
+
+escribirNombre(user)
+// Ejercicio 1
+
+
+// Ejercicio 2 y 3
+const escribirProductos = (filtro = "")=>{
+    fetch('db.json')
+    .then(res => res.json())
+    .then(productos => {
+    const product_grid = document.querySelector(".product-grid")
+    product_grid.innerHTML = ""
+    productos.forEach(producto => {
+        const name = producto.title
+        if (name.toLowerCase().includes(filtro.toLowerCase())) {
+        const div = document.createElement("div")
+        div.classList.add("product-card")
+        div.innerHTML = `
+            <img src="${producto.image}" alt="nombre">
+            <h3>${producto.title}</h3>
+            <p>$${producto.price}</p>
+        `
+        const boton = document.createElement('button');
+                    boton.textContent = 'Agregar a carrito';
+                    boton.classList.add('add-to-cart');
+                    boton.addEventListener('click', () => {
+                        carrito.push(producto);
+                        localStorage.setItem("carrito", JSON.stringify(carrito))
+                        console.log("Producto agregado:", producto.title)
+                        cargarCarrito()
+                    });
+
+                    div.appendChild(boton)
+        product_grid.appendChild(div)
+        }
+
+    })
+})
+}
+// Ejercicio 2 y 3
+
+
+// Ejercicio 4
+const inputNav = document.querySelector(".search-bar")
+inputNav.addEventListener("keyup", (e)=>{
+    escribirProductos(e.target.value)
+})
+// Ejercicio 4
+
+
+// Ejercicio 5
+const cargarCarrito = () => {
+        const product_cart = document.getElementById("cart-items")
+        product_cart.innerHTML = ""
+        carrito.forEach((element, index) => {
+        const name = element.title
+        const li = document.createElement("li")
+        li.classList.add("item-block")
+        li.innerHTML = `
+            <p class="item-name">${element.title} - $${element.price}</p>
+        `
+
+        const boton = document.createElement('button');
+        boton.textContent = 'Eliminar';
+        boton.classList.add('delete-button')
+        boton.addEventListener('click', () => {
+            carrito.splice(index, 1)
+            cargarCarrito()
+        });
+        li.appendChild(boton)
+
+        product_cart.appendChild(li)
+    })}
+
+
+// Ejercicio 5
+
+
+
 // Función inicializadora
 function init() {
   // Aquí deben invocarse todas las funciones necesarias para que la aplicación comience a funcionar
+  const carritoGuardado = localStorage.getItem("carrito");
+
+    if (carritoGuardado) {
+        carrito = JSON.parse(carritoGuardado);
+        cargarCarrito();
+    }
+
+    escribirNombre(user);
+    escribirProductos();
   
 }
-
-
