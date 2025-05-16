@@ -103,7 +103,6 @@ escribirNombre(user)
 const escribirProductos = (filtro = "")=>{
     fetch('db.json')
     .then(res => {
-        console.log(res); // Aquí puedes ver si devuelve HTML
         return res.json();
     })
     .then(productos => {
@@ -147,7 +146,7 @@ inputNav.addEventListener("keyup", (e)=>{
 // Ejercicio 4
 
 
-// Ejercicio 5
+// Ejercicio 5 y 6
 const cargarCarrito = () => {
         const product_cart = document.getElementById("cart-items")
         product_cart.innerHTML = ""
@@ -173,7 +172,7 @@ const cargarCarrito = () => {
     localStorage.setItem("carrito", JSON.stringify(carrito))}
 
 
-// Ejercicio 5
+// Ejercicio 5 y 6
 
 
 
