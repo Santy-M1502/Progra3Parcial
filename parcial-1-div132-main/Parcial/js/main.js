@@ -149,6 +149,8 @@ inputNav.addEventListener("keyup", (e)=>{
 // Ejercicio 5 y 6
 const cargarCarrito = () => {
         const product_cart = document.getElementById("cart-items")
+        var total = 0
+        const precio = document.getElementById("total-price")
         product_cart.innerHTML = ""
         carrito.forEach((element, index) => {
         const name = element.nombre
@@ -157,6 +159,7 @@ const cargarCarrito = () => {
         li.innerHTML = `
             <p class="item-name">${element.nombre} - $${element.precio}</p>
         `
+        total += element.precio
 
         const boton = document.createElement('button');
         boton.textContent = 'Eliminar';
@@ -169,6 +172,7 @@ const cargarCarrito = () => {
 
         product_cart.appendChild(li)
     })
+    precio.innerHTML = `$${total}.00`
     localStorage.setItem("carrito", JSON.stringify(carrito))}
 
 
